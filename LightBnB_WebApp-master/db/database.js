@@ -120,9 +120,37 @@ const addUser = async (user) => {
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+
+// const getAllReservations = function(guest_id, limit = 10) {
+//   return getAllProperties(null, 2);
+// };
+
+//Refactored getAllReservations
+const getAllReservations = async (guest_id, limit) => {
+  try {
+    const query = 'SELECT reservations.*, properties.* \
+      FROM reservations \
+      JOIN properties ON reservations.property_id = properties.id \
+      JOIN property_reviews ON properties.id = property_reviews.property_id \
+      WHERE reservations.guest_id = $1 \
+      GROUP BY reservations.id, properties.id \
+      ORDER BY reservations.start_date \
+      LIMIT $2';
+
+    const result = await pool.query(query, [guest_id, limit]);
+    if (result.rows.length > 0) {
+      return result.rows;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log("Guest_id error is:", err);
+    throw err;
+  }
 };
+
+
+
 
 /// Properties
 
