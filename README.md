@@ -3,9 +3,7 @@
 #### LightBnB is a simple multy-page Airbnb clone that uses a server-side JavaScript to display the information from querie to web pages via SQL queries.
 
 ![Home Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/home_screen.png)
-![Login Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/login_page.png)
 ![Sign Up Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/sign_up_page.png)
-![Search Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/reservations_page.png)
 ![User Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/user_page.png)
 
 
