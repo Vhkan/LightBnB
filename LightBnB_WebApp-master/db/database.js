@@ -1,3 +1,4 @@
+const { options } = require("pg/lib/defaults");
 const properties = require("./json/properties.json");
 const users = require("./json/users.json");
 
@@ -138,6 +139,7 @@ const getAllReservations = async (guest_id, limit) => {
       LIMIT $2';
 
     const result = await pool.query(query, [guest_id, limit]);
+
     if (result.rows.length > 0) {
       return result.rows;
     } else {
@@ -161,21 +163,89 @@ const getAllReservations = async (guest_id, limit) => {
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 
-//Refactoring the function to use lightbnb DB
-const getAllProperties = function(options, limit = 10) {
-  return pool.query(
-    `SELECT * 
-     FROM properties
-     LIMIT $1`,
-    [limit])
-    .then((result) => {
-      // console.log(result.rows);
+// //Refactoring the function to use lightbnb DB
+// const getAllProperties = function(options, limit = 10) {
+//   return pool.query(
+//     `SELECT * 
+//      FROM properties
+//      LIMIT $1`,
+//     [limit])
+//     .then((result) => {
+//       // console.log(result.rows);
+//       return result.rows;
+//     })
+//     .catch((err) => {
+//       console.log(err.message);
+//     });
+// };
+
+//Refactored getAllProperties
+const getAllProperties = async (options, limit = 10) => {
+  try {
+    const queryParams = [];
+
+    let query = "SELECT properties.*, AVG(property_reviews.rating) AS average_rating " +
+      "FROM properties " +
+      "JOIN property_reviews ON property_reviews.property_id = properties.id ";
+
+    if (options.city) {
+      queryParams.push(`%${options.city}%`);
+      query += "WHERE city LIKE $" + queryParams.length + " ";
+    }
+
+    if (options.owner_id && !options.city) {
+      queryParams.push(options.owner_id);
+      query += "WHERE owner_id = $" + queryParams.length;
+    } else if (options.owner_id && options.city) {
+      queryParams.push(options.owner_id);
+      query += "AND owner_id = $" + queryParams.length;
+    }
+
+    if (
+      options.minimum_price_per_night &&
+      options.maximum_price_per_night &&
+      !options.city &&
+      !options.owner_id
+    ) {
+      queryParams.push(options.minimum_price_per_night);
+      query += "WHERE (cost_per_night/100) > $" + queryParams.length;
+      queryParams.push(options.maximum_price_per_night);
+      query += "AND (cost_per_night/100) < $" + queryParams.length;
+    } else if (
+      options.minimum_price_per_night &&
+      options.maximum_price_per_night &&
+      (options.city || options.owner_id)
+    ) {
+      queryParams.push(options.minimum_price_per_night);
+      query += "AND (cost_per_night/100) > $" + queryParams.length;
+      queryParams.push(options.maximum_price_per_night);
+      query += "AND (cost_per_night/100) < $" + queryParams.length;
+    }
+
+    if (options.minimum_rating) {
+      queryParams.push(options.minimum_rating);
+      query += "HAVING AVG(property_reviews.rating) < $" + queryParams.length;
+    }
+
+    queryParams.push(limit);
+    query += "GROUP BY properties.id " +
+      "ORDER BY cost_per_night " +
+      "LIMIT $" + queryParams.length;
+
+    // console.log(query, queryParams);
+    const result = await pool.query(query, queryParams);
+
+    if (result.rows.length > 0) {
       return result.rows;
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log("Guest_id error is:", err);
+    throw err;
+  }
 };
+
 
 /**
  * Add a property to the database
