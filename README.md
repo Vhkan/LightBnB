@@ -2,10 +2,18 @@
 
 #### LightBnB is a simple multy-page Airbnb clone that uses a server-side JavaScript to display the information from querie to web pages via SQL queries.
 
+## Final Product
+
 ![Home Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/home_screen.png)
 ![Sign Up Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/sign_up_page.png)
 ![User Page](https://github.com/Vhkan/LightBnB/blob/main/LightBnB_WebApp-master/documents/user_page.png)
 
+## Getting Started
+
+- Install all dependencies (using the npm install command).
+- CD over to LightBnB_WebApp in your Terminal and run "npm run local" command to start using the app.
+- The message "listening on port 3000 😎" in Terminal will be displayed if the app is run successfully.
+- Navigate to: http://localhost:3000 in your web browser to use the app.
 
 ## Project Structure
 
