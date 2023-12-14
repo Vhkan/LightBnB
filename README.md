@@ -10,7 +10,14 @@
 
 ## Getting Started
 
+- Clone the repository to your local computer using git clone https://github.com/Vhkan/LightBnB
 - Install all dependencies (using the npm install command).
+
+- Populate your Database by runnig the following commands in psql: 
+- \i migrations/01_schema.sql
+- \i seeds/01_seeds.sql
+- \i seeds/02_seeds.sql
+
 - CD over to LightBnB_WebApp in your Terminal and run "npm run local" command to start using the app.
 - The message "listening on port 3000 😎" in Terminal will be displayed if the app is run successfully.
 - Navigate to: http://localhost:3000 in your web browser to use the app.
