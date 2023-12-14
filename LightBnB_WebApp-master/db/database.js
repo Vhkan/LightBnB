@@ -25,23 +25,8 @@ pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => { (respons
  * @return {Promise<{}>} A promise to the user.
  */
 
-// const getUserWithEmail = function(email) {
-//   let resolvedUser = null;
-//   for (const userId in users) {
-//     const user = users[userId];
-//     if (user && user.email.toLowerCase() === email.toLowerCase()) {
-//       resolvedUser = user;
-//     }
-//   }
-//   return Promise.resolve(resolvedUser);
-// };
-
 //Refactoring getUserWithEmail
-//Accepts an email address and will return a promise.
-// The promise should resolve with a user object with the given email address,
-// or null if that user does not exist
 const getUserWithEmail = async (email) => {
-
   try {
     const query = 'SELECT * FROM users WHERE email = $1';
     const result = await pool.query(query, [email]);
@@ -61,10 +46,6 @@ const getUserWithEmail = async (email) => {
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-
-// const getUserWithId = function(id) {
-//   return Promise.resolve(users[id]);
-// };
 
 //Refactored getUserWithId
 const getUserWithId = async (id) => {
@@ -88,18 +69,8 @@ const getUserWithId = async (id) => {
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-// const addUser = function(user) {
-//   const userId = Object.keys(users).length + 1;
-//   user.id = userId;
-//   users[userId] = user;
-//   return Promise.resolve(user);
-// };
 
 //Refactored addUser function
-// Accepts a user object that will have a name, email, and password property
-// This function should insert the new user into the database
-// It will return a promise that resolves with the new user object. 
-// This object should contain the user's id after it's been added to the database.
 const addUser = async (user) => {
   try {
     const query = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;'
@@ -114,7 +85,6 @@ const addUser = async (user) => {
   }
 };
 
-
 /// Reservations
 
 /**
@@ -122,10 +92,6 @@ const addUser = async (user) => {
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-
-// const getAllReservations = function(guest_id, limit = 10) {
-//   return getAllProperties(null, 2);
-// };
 
 //Refactored getAllReservations
 const getAllReservations = async (guest_id, limit) => {
@@ -152,9 +118,6 @@ const getAllReservations = async (guest_id, limit) => {
   }
 };
 
-
-
-
 /// Properties
 
 /**
@@ -163,22 +126,6 @@ const getAllReservations = async (guest_id, limit) => {
  * @param {*} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
-
-// //Refactoring the function to use lightbnb DB
-// const getAllProperties = function(options, limit = 10) {
-//   return pool.query(
-//     `SELECT * 
-//      FROM properties
-//      LIMIT $1`,
-//     [limit])
-//     .then((result) => {
-//       // console.log(result.rows);
-//       return result.rows;
-//     })
-//     .catch((err) => {
-//       console.log(err.message);
-//     });
-// };
 
 //Refactored getAllProperties
 const getAllProperties = async (options, limit = 10) => {
@@ -233,7 +180,6 @@ const getAllProperties = async (options, limit = 10) => {
       "ORDER BY cost_per_night " +
       "LIMIT $" + queryParams.length;
 
-    // console.log(query, queryParams);
     const result = await pool.query(query, queryParams);
 
     if (result.rows.length > 0) {
@@ -253,12 +199,6 @@ const getAllProperties = async (options, limit = 10) => {
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
-// const addProperty = function(property) {
-//   const propertyId = Object.keys(properties).length + 1;
-//   property.id = propertyId;
-//   properties[propertyId] = property;
-//   return Promise.resolve(property);
-// };
 
 // Refactored addProperty function
 const addProperty = async (property) => {
