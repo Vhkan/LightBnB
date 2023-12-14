@@ -1,6 +1,6 @@
 # LightBnB
 
-## LightBnB is a simple multy-page Airbnb clone that uses a server-side JavaScript to display the information from querie to web pages via SQL queries.
+#### LightBnB is a simple multy-page Airbnb clone that uses a server-side JavaScript to display the information from querie to web pages via SQL queries.
 
 ## Project Structure
 
@@ -57,4 +57,4 @@
 * `server.js` is the entry point to the application. This connects the routes to the database.
 
 
-### This project was made as part of the LHL educational program.
+###### This project was made as part of the LHL educational program.
